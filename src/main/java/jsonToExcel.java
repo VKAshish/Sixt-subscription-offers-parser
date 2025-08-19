@@ -16,7 +16,7 @@ public class jsonToExcel {
 
             Row headerRow = sheet.createRow(0);
             String[] headers = {"OwnersOfferKey", "URL", "Maker", "Model", "Term",
-                "minContractDurationInMonths", "Version", "transmissionId", "Rate", "StartingFee",
+                "minContractDurationInMonths", "Version", "transmissionId", "acrissCode", "powerType", "Rate", "StartingFee",
                 "AvailableDeliveryLocations", "homeDeliveryFee", "ImageNames", "TypeCategory",
                 "DoorCount"};
             for (int i = 0; i < headers.length; i++) {
@@ -110,6 +110,12 @@ public class jsonToExcel {
                                         transmissionId = String.valueOf(acrissCode.charAt(2));
                                     }
 
+                                    String electric = extractBooleanValue(offer, "electric");
+                                    String powerType = "ICE";
+                                    if ("true".equals(electric)) {
+                                        powerType = "EV";
+                                    }
+
                                     String maker = "";
                                     String model = "";
                                     if (name != null && !name.equals("Not found")) {
@@ -133,14 +139,16 @@ public class jsonToExcel {
                                     row.createCell(5).setCellValue(minContractDurationInMonths);
                                     row.createCell(6).setCellValue(shortSubline);
                                     row.createCell(7).setCellValue(transmissionId);
-                                    row.createCell(8).setCellValue(rate);
-                                    row.createCell(9).setCellValue(startingFee);
-                                    row.createCell(10).setCellValue("An vielen SIXT Stationen");
-                                    row.createCell(11).setCellValue("199€");
-                                    row.createCell(12)
+                                    row.createCell(8).setCellValue(acrissCode);
+                                    row.createCell(9).setCellValue(powerType);
+                                    row.createCell(10).setCellValue(rate);
+                                    row.createCell(11).setCellValue(startingFee);
+                                    row.createCell(12).setCellValue("An vielen SIXT Stationen");
+                                    row.createCell(13).setCellValue("199€");
+                                    row.createCell(14)
                                         .setCellValue("https://www.sixt.com" + imageNames);
-                                    row.createCell(13).setCellValue(typeCategory);
-                                    row.createCell(14).setCellValue(doorCount);
+                                    row.createCell(15).setCellValue(typeCategory);
+                                    row.createCell(16).setCellValue(doorCount);
                                 }
                             }
                         }
@@ -329,6 +337,15 @@ public class jsonToExcel {
             return matcher.group(1);
         }
         return "Not found";
+    }
+
+    private static String extractBooleanValue(String json, String key) {
+        Pattern pattern = Pattern.compile("\"" + key + "\"\\s*:\\s*(true|false)");
+        Matcher matcher = pattern.matcher(json);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "false";
     }
 
     private static String convertTermToMonths(String termLabel) {
