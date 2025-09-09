@@ -108,12 +108,13 @@ public class jsonToExcel {
                                     if (acrissCode != null && !acrissCode.equals("Not found")
                                         && acrissCode.length() >= 3) {
                                         transmissionId = String.valueOf(acrissCode.charAt(2));
+                                        if(!transmissionId.equals("M")) transmissionId = "A";
                                     }
 
                                     String electric = extractBooleanValue(offer, "electric");
-                                    String powerType = "ICE";
+                                    String powerType = "B";
                                     if ("true".equals(electric)) {
-                                        powerType = "EV";
+                                        powerType = "E";
                                     }
 
                                     String maker = "";
