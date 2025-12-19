@@ -32,7 +32,7 @@ public class jsonToExcel {
             String jsonContent;
             try {
                 java.io.InputStream is = jsonToExcel.class.getClassLoader()
-                    .getResourceAsStream("data.json");
+                    .getResourceAsStream("data2.json");
                 if (is != null) {
                     jsonContent = new String(is.readAllBytes());
                     is.close();
